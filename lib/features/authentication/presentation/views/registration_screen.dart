@@ -32,7 +32,9 @@ class RegisterScreen extends ConsumerWidget {
                   radius: 45,
                   backgroundColor: Colors.grey.shade300,
                   backgroundImage: image != null ? FileImage(image) : null,
-                  child: image == null ?  Icon(Icons.camera_alt, size: 30) : null,
+                  child: image == null
+                      ? Icon(Icons.camera_alt, size: 30)
+                      : null,
                 ),
               ),
 
@@ -66,6 +68,22 @@ class RegisterScreen extends ConsumerWidget {
                 label: 'Date of Birth',
                 hintText: 'YYYY-MM-DD',
                 prefixIcon: const Icon(Icons.calendar_today),
+              ),
+              const SizedBox(height: 15),
+
+              CustomTextfield(
+                label: 'Password',
+                hintText: 'Enter Your Password',
+                prefixIcon: const Icon(Icons.lock),
+                isPassword: true,
+              ),
+              const SizedBox(height: 15),
+
+              CustomTextfield(
+                label: 'Confirm Password',
+                hintText: 'Re-enter Your Password',
+                prefixIcon: const Icon(Icons.lock),
+                isPassword: true,
               ),
 
               const SizedBox(height: 25),

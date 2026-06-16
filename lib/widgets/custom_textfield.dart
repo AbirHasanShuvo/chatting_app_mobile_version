@@ -1,39 +1,67 @@
 import 'package:flutter/material.dart';
 
-class CustomTextfield extends StatelessWidget {
+class CustomTextfield extends StatefulWidget {
   final String label;
   final String hintText;
   final Icon? prefixIcon;
+  final bool isPassword;
+
   const CustomTextfield({
     super.key,
     required this.label,
     required this.hintText,
     this.prefixIcon,
+    this.isPassword = false,
   });
+
+  @override
+  State<CustomTextfield> createState() => _CustomTextfieldState();
+}
+
+class _CustomTextfieldState extends State<CustomTextfield> {
+  bool _isObscure = true;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      obscureText: widget.isPassword ? _isObscure : false,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.grey, width: 1.5),
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.green, width: 1.5),
+          borderSide: const BorderSide(
+            color: Colors.grey,
+            width: 1.5,
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.green, width: 2),
+          borderSide: const BorderSide(
+            color: Colors.green,
+            width: 2,
+          ),
         ),
-        errorBorder: OutlineInputBorder(
+        border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.red, width: 2),
         ),
-        labelText: label,
-        hintText: hintText,
-        prefixIcon: prefixIcon,
+        labelText: widget.label,
+        hintText: widget.hintText,
+        prefixIcon: widget.prefixIcon,
+
+        // 👇 Toggle Button
+        suffixIcon: widget.isPassword
+            ? IconButton(
+                onPressed: () {
+                  setState(() {
+                    _isObscure = !_isObscure;
+                  });
+                },
+                icon: Icon(
+                  _isObscure
+                      ? Icons.visibility_off
+                      : Icons.visibility,
+                ),
+              )
+            : null,
       ),
     );
   }
