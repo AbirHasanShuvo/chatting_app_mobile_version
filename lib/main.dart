@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:snapchat_mobile/features/authentication/presentation/views/splash_screen.dart';
 import 'package:snapchat_mobile/router/go_router.dart';
 
 void main() {

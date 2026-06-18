@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:snapchat_mobile/features/authentication/presentation/views/login_screen.dart';
 import 'package:snapchat_mobile/features/authentication/presentation/views/registration_screen.dart';

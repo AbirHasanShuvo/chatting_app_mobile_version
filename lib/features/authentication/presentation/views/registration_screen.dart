@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:snapchat_mobile/features/authentication/presentation/providers/image_provider.dart';
+import 'package:snapchat_mobile/features/authentication/providers/image_provider.dart';
 import 'package:snapchat_mobile/widgets/custom_textfield.dart';
 
 class RegisterScreen extends ConsumerWidget {
