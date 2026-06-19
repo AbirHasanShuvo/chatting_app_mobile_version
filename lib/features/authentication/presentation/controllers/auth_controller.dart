@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
+import 'package:snapchat_mobile/features/authentication/data/models/user_model.dart';
 import 'package:snapchat_mobile/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:snapchat_mobile/features/authentication/providers/auth_provider.dart';
 
@@ -21,6 +24,13 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
       //print(res);
       final token = res['token'];
       await ref.read(secureStorageProvider).saveToken(token);
+      if (res['data'] != null) {
+        final user = UserModel.fromJson(res['data']);
+        final userJsonString = jsonEncode(user.toJson());
+        await ref.read(secureStorageProvider).saveUser(userJsonString);
+        ref.read(userProvider.notifier).state = user;
+      }
+
       state = const AsyncData(null);
       return true;
     } catch (e) {
@@ -50,6 +60,12 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
 
       final token = res['token'];
       await ref.read(secureStorageProvider).saveToken(token);
+      if (res['data'] != null) {
+        final user = UserModel.fromJson(res['data']);
+        final userJsonString = jsonEncode(user.toJson());
+        await ref.read(secureStorageProvider).saveUser(userJsonString);
+        ref.read(userProvider.notifier).state = user;
+      }
       state = const AsyncData(null);
       return true;
     } catch (e) {

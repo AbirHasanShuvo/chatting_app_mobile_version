@@ -23,7 +23,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-
   @override
   void dispose() {
     nameController.dispose();
@@ -138,7 +137,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () async{
+                    onPressed: () async {
                       if (!(_formKey.currentState?.validate() ?? false)) {
                         return;
                       }
@@ -151,13 +150,31 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         return;
                       }
 
-                      final success = await ref.read(authControllerProvider.notifier).register(name: nameController.text.trim(), date_of_birth: dateofbirthController.text.trim(), email: emailController.text.trim(), phone: phoneController.text.trim(), password: passwordController.text.trim(), profilePicturePath: image.path);
+                      final success = await ref
+                          .read(authControllerProvider.notifier)
+                          .register(
+                            name: nameController.text.trim(),
+                            date_of_birth: dateofbirthController.text.trim(),
+                            email: emailController.text.trim(),
+                            phone: phoneController.text.trim(),
+                            password: passwordController.text.trim(),
+                            profilePicturePath: image.path,
+                          );
 
-                      if(success && context.mounted){
-                        context.pushReplacement('/home');
+                      if (success && context.mounted) {
+                        context.go('/home');
                       }
                     },
-                    child: const Text("Register"),
+                    child: authState.isLoading
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Text("Register"),
                   ),
                 ),
 

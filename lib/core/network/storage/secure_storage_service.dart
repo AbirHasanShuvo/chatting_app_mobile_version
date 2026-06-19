@@ -17,4 +17,17 @@ class SecureStorageServices {
   Future<void> clearAll() async {
     await _storage.deleteAll();
   }  
+
+  Future<void> saveUser(String userJson) async {
+    await _storage.write(key: 'user', value: userJson);
+  }
+
+  Future<String?> getUser() {
+    return _storage.read(key: 'user');
+  }
+
+  Future<void> clearUser() async {
+    await _storage.delete(key: 'user');
+  }
+
 }
