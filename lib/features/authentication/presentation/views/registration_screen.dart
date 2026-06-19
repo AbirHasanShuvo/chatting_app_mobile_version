@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:snapchat_mobile/features/authentication/presentation/controllers/auth_controller.dart';
 import 'package:snapchat_mobile/features/authentication/providers/image_provider.dart';
 import 'package:snapchat_mobile/widgets/custom_textfield.dart';
 import 'package:snapchat_mobile/widgets/shared/utils/validators.dart';
@@ -13,6 +15,7 @@ class RegisterScreen extends ConsumerStatefulWidget {
 }
 
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
+  final _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
@@ -20,11 +23,22 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    phoneController.dispose();
+    emailController.dispose();
+    dateofbirthController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final image = ref.watch(imageProvider);
-    final _formKey = GlobalKey<FormState>();
-
+    final authState = ref.watch(authControllerProvider);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -124,11 +138,24 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async{
                       if (!(_formKey.currentState?.validate() ?? false)) {
                         return;
                       }
-                      //print('hello world');
+                      if (image == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please select a profile image'),
+                          ),
+                        );
+                        return;
+                      }
+
+                      final success = await ref.read(authControllerProvider.notifier).register(name: nameController.text.trim(), date_of_birth: dateofbirthController.text.trim(), email: emailController.text.trim(), phone: phoneController.text.trim(), password: passwordController.text.trim(), profilePicturePath: image.path);
+
+                      if(success && context.mounted){
+                        context.pushReplacement('/home');
+                      }
                     },
                     child: const Text("Register"),
                   ),

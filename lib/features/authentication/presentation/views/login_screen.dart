@@ -14,10 +14,10 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
- 
   @override
   void dispose() {
     emailController.dispose();
@@ -28,22 +28,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authControllerProvider);
-    final _formKey = GlobalKey<FormState>();
     ref.listen(authControllerProvider, (prev, next) {
-  next.whenOrNull(
-    error: (error, stackTrace) {
-      final message =
-          error.toString().replaceAll('Exception: ', '');
+      next.whenOrNull(
+        error: (error, stackTrace) {
+          final message = error.toString().replaceAll('Exception: ', '');
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          backgroundColor: Colors.red,
-        ),
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(message), backgroundColor: Colors.red),
+          );
+        },
       );
-    },
-  );
-});
+    });
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
