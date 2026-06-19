@@ -1,0 +1,39 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
+import 'package:snapchat_mobile/features/authentication/domain/repositories/auth_repository.dart';
+import 'package:snapchat_mobile/features/authentication/providers/auth_provider.dart';
+
+final authControllerProvider =
+    StateNotifierProvider<AuthController, AsyncValue<void>>((ref) {
+  return AuthController(
+    ref,
+    ref.read(authrepositoryProvider),
+  );
+});
+
+
+class AuthController extends StateNotifier<AsyncValue<void>> {
+  final AuthRepository repository;
+  final Ref ref;
+  AuthController(this.ref, this.repository) : super(const AsyncData(null));
+
+  Future<bool> login(String email,String password)async{
+    try{
+      //print('Login started');
+      state = AsyncLoading();
+      final res = await repository.login(email: email, password: password);
+      //print(res);
+      final token = res['token'];
+      await ref.read(secureStorageProvider).saveToken(token);
+      state = const AsyncData(null);
+      return true;
+    }catch(e){
+      state = AsyncError(e, StackTrace.current);
+      return false;
+    }
+  }
+  Future<void> logout() async {
+  await ref.read(secureStorageProvider).clearToken();
+  state = const AsyncData(null);
+}
+}

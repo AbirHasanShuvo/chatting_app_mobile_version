@@ -5,6 +5,8 @@ class CustomTextfield extends StatefulWidget {
   final String hintText;
   final Icon? prefixIcon;
   final bool isPassword;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   const CustomTextfield({
     super.key,
@@ -12,6 +14,8 @@ class CustomTextfield extends StatefulWidget {
     required this.hintText,
     this.prefixIcon,
     this.isPassword = false,
+    this.controller,
+    this.validator,
   });
 
   @override
@@ -24,6 +28,8 @@ class _CustomTextfieldState extends State<CustomTextfield> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: widget.controller,
+      validator: widget.validator,
       obscureText: widget.isPassword ? _isObscure : false,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
@@ -46,8 +52,6 @@ class _CustomTextfieldState extends State<CustomTextfield> {
         labelText: widget.label,
         hintText: widget.hintText,
         prefixIcon: widget.prefixIcon,
-
-        // 👇 Toggle Button
         suffixIcon: widget.isPassword
             ? IconButton(
                 onPressed: () {

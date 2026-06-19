@@ -1,39 +1,61 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:snapchat_mobile/features/authentication/providers/auth_provider.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    _checkAuth();
+  }
 
-    Timer(const Duration(seconds: 1), () {
-      context.pushReplacement('/login');
-    });
+  Future<void> _checkAuth() async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    final storage = ref.read(secureStorageProvider);
+    final token = await storage.getToken();
+
+    if (!mounted) return;
+
+    if (token != null && token.isNotEmpty) {
+      context.go('/home');
+    } else {
+      context.go('/login');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('SnapChat', style: GoogleFonts.blackOpsOne(fontSize: 45)),
+            Text(
+              'SnapChat',
+              style: GoogleFonts.blackOpsOne(fontSize: 45),
+            ),
             const SizedBox(height: 15),
-            Image.asset(height: 250, width: 250, 'assets/icons/splash.png'),
+            Image.asset(
+              'assets/icons/splash.png',
+              height: 250,
+              width: 250,
+            ),
             const SizedBox(height: 20),
-            Text('Loading....', style: GoogleFonts.blackOpsOne(fontSize: 30)),
+            Text(
+              'Loading....',
+              style: GoogleFonts.blackOpsOne(fontSize: 30),
+            ),
           ],
         ),
       ),
