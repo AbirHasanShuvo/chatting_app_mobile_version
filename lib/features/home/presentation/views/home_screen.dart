@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:snapchat_mobile/features/authentication/presentation/controllers/auth_controller.dart';
 import 'package:snapchat_mobile/features/authentication/providers/auth_provider.dart';
+import 'package:snapchat_mobile/features/home/providers/home_provider.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -10,9 +11,11 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
+    final alluser = ref.watch(alluserProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Logout'),
+        title: Text('Chats'),
+        centerTitle: false,
         actions: [
           IconButton(
             onPressed: () async {
@@ -25,9 +28,27 @@ class HomeScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: user != null
-          ? Center(child: Text(user.name))
-          : Center(child: Text('No user is here')),
+      body: alluser.when(
+        data: (data) {
+          return ListView.builder(
+            itemCount: data.length,
+            itemBuilder: (_, item) {
+              final user = data[item];
+              return ListTile(
+                title: Text(user.name),
+                subtitle: Text(user.email),
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    'http://127.0.0.1:8000${user.profilePicture}',
+                  ),
+                ),
+              );
+            },
+          );
+        },
+        error: (error, stack) => Center(child: Text(error.toString())),
+        loading: () => Center(child: CircularProgressIndicator()),
+      ),
     );
   }
 }
