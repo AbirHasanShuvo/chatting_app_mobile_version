@@ -23,10 +23,11 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
     final storage = ref.read(secureStorageProvider);
     final token = await storage.getToken();
-
+    
     if (!mounted) return;
 
     if (token != null && token.isNotEmpty) {
+      await ref.read(fetchSavedUserProvider.future);
       context.go('/home');
     } else {
       context.go('/login');
@@ -36,26 +37,15 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'SnapChat',
-              style: GoogleFonts.blackOpsOne(fontSize: 45),
-            ),
+            Text('SnapChat', style: GoogleFonts.blackOpsOne(fontSize: 45)),
             const SizedBox(height: 15),
-            Image.asset(
-              'assets/icons/splash.png',
-              height: 250,
-              width: 250,
-            ),
+            Image.asset('assets/icons/splash.png', height: 250, width: 250),
             const SizedBox(height: 20),
-            Text(
-              'Loading....',
-              style: GoogleFonts.blackOpsOne(fontSize: 30),
-            ),
+            Text('Loading....', style: GoogleFonts.blackOpsOne(fontSize: 30)),
           ],
         ),
       ),
