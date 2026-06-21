@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:snapchat_mobile/features/authentication/providers/auth_provider.dart';
+import 'package:snapchat_mobile/features/home/providers/home_provider.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -28,6 +29,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
     if (token != null && token.isNotEmpty) {
       await ref.read(fetchSavedUserProvider.future);
+      await ref.read(alluserProvider.future);
       context.go('/home');
     } else {
       context.go('/login');

@@ -10,11 +10,11 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider);
+    final user = ref.watch(fetchSavedUserProvider);
     final alluser = ref.watch(alluserProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chats'),
+        title: Text('chats'),
         centerTitle: false,
         actions: [
           IconButton(
@@ -35,6 +35,7 @@ class HomeScreen extends ConsumerWidget {
             itemBuilder: (_, item) {
               final user = data[item];
               return ListTile(
+                onTap: () => context.push('message/${user.id}'),
                 title: Text(user.name),
                 subtitle: Text(user.email),
                 leading: CircleAvatar(

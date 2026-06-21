@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:snapchat_mobile/features/authentication/presentation/controllers/auth_controller.dart';
+import 'package:snapchat_mobile/features/home/providers/home_provider.dart';
 import 'package:snapchat_mobile/widgets/custom_textfield.dart';
 import 'package:snapchat_mobile/widgets/shared/utils/validators.dart';
 
@@ -83,16 +84,45 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                   const SizedBox(height: 25),
 
+                  // SizedBox(
+                  //   width: double.infinity,
+                  //   child: ElevatedButton(
+                  //     onPressed: authState.isLoading
+                  //         ? null
+                  //         : () async {
+                  //             if (!(_formKey.currentState?.validate() ??
+                  //                 false)) {
+                  //               return;
+                  //             }
+
+                  //             final success = await ref
+                  //                 .read(authControllerProvider.notifier)
+                  //                 .login(
+                  //                   emailController.text.trim(),
+                  //                   passwordController.text.trim(),
+                  //                 );
+
+                  //             if (success && context.mounted) {
+                  //               context.pushReplacement('/home');
+                  //             }
+                  //           },
+                  //     child: authState.isLoading
+                  //         ? const SizedBox(
+                  //             height: 20,
+                  //             width: 20,
+                  //             child: CircularProgressIndicator(strokeWidth: 2),
+                  //           )
+                  //         : const Text("Login"),
+                  //   ),
+                  // ),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: authState.isLoading
                           ? null
                           : () async {
-                              if (!(_formKey.currentState?.validate() ??
-                                  false)) {
+                              if (!(_formKey.currentState?.validate() ?? false))
                                 return;
-                              }
 
                               final success = await ref
                                   .read(authControllerProvider.notifier)
@@ -102,6 +132,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   );
 
                               if (success && context.mounted) {
+                                //ref.invalidate(alluserProvider);
                                 context.pushReplacement('/home');
                               }
                             },

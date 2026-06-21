@@ -7,6 +7,7 @@ class HomeDatasource {
   Future<List<UserModel>> getUsers() async {
     try {
       final response = await DioClient.dio.get(ApiEndpoints.users);
+      //print(response);
       final List data = response.data['users'];
       return data.map((e) => UserModel.fromJson(e)).toList();
     } on DioException catch (e) {
