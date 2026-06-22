@@ -121,8 +121,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       onPressed: authState.isLoading
                           ? null
                           : () async {
-                              if (!(_formKey.currentState?.validate() ?? false))
+                              if (!(_formKey.currentState?.validate() ?? false)) {
                                 return;
+                              }
 
                               final success = await ref
                                   .read(authControllerProvider.notifier)

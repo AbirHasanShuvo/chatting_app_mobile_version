@@ -35,7 +35,7 @@ class HomeScreen extends ConsumerWidget {
             itemBuilder: (_, item) {
               final user = data[item];
               return ListTile(
-                onTap: () => context.push('message/${user.id}'),
+                onTap: () => context.push('/message', extra: user),
                 title: Text(user.name),
                 subtitle: Text(user.email),
                 leading: CircleAvatar(
