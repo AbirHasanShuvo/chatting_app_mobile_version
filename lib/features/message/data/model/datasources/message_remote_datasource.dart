@@ -4,6 +4,7 @@ import 'package:snapchat_mobile/features/message/data/model/message_model.dart';
 
 abstract class MessageRemoteDatasource {
   Future<List<MessageModel>> getMessages(int userId);
+  Future<MessageModel> sendMessage(int receiverId, String message);
 }
 
 class MessageRemoteDatasourceImpl implements MessageRemoteDatasource {
@@ -11,8 +12,6 @@ class MessageRemoteDatasourceImpl implements MessageRemoteDatasource {
   Future<List<MessageModel>> getMessages(int userId) async {
     try {
       final response = await DioClient.dio.get('messages/$userId');
-      //inal response = await DioClient.dio.get('$$userId');
-
 
       final List data = response.data;
       return data.map((e) => MessageModel.fromJson(e)).toList();
@@ -21,6 +20,22 @@ class MessageRemoteDatasourceImpl implements MessageRemoteDatasource {
           ? e.response?.data['message']
           : "Failed to fetch messages";
       throw Exception(message);
+    }
+  }
+
+  @override
+  Future<MessageModel> sendMessage(int receiverId, String message) async {
+    try {
+      final response = await DioClient.dio.post(
+        'message',
+        data: {'receiver_id': receiverId, 'message': message, 'type': 'text'},
+      );
+      return MessageModel.fromJson(response.data);
+    } on DioException catch (e) {
+      final msg = e.response?.data is Map<String, dynamic>
+          ? e.response?.data['message']
+          : "Failed to send message";
+      throw Exception(msg);
     }
   }
 }

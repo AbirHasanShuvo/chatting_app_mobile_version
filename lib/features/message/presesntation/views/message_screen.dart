@@ -22,7 +22,8 @@ class MessageScreen extends ConsumerWidget {
               child: messagesAsync.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (e, _) => Center(child: Text(e.toString())),
-                data: (messages) => ListView.builder(  // messages is List<MessageEntity> now
+                data: (messages) => ListView.builder(
+                  // messages is List<MessageEntity> now
                   itemCount: messages.length,
                   itemBuilder: (_, index) {
                     final msg = messages[index];
@@ -33,7 +34,9 @@ class MessageScreen extends ConsumerWidget {
                       child: Container(
                         margin: const EdgeInsets.symmetric(vertical: 4),
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 8),
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
                         decoration: BoxDecoration(
                           color: msg.isMe
                               ? Colors.indigo

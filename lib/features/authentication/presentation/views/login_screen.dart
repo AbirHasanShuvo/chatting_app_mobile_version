@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:snapchat_mobile/features/authentication/presentation/controllers/auth_controller.dart';
-import 'package:snapchat_mobile/features/home/providers/home_provider.dart';
 import 'package:snapchat_mobile/widgets/custom_textfield.dart';
 import 'package:snapchat_mobile/widgets/shared/utils/validators.dart';
 
