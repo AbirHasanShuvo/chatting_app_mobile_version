@@ -1,4 +1,3 @@
-import 'package:snapchat_mobile/features/message/data/model/message_model.dart';
 import 'package:snapchat_mobile/features/message/domain/entities/message_entity.dart';
 import 'package:snapchat_mobile/features/message/domain/repositories/message_repository.dart';
 

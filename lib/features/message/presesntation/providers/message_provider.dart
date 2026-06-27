@@ -14,32 +14,43 @@ final messageRepositoryProvider = Provider<MessageRepository>(
     remoteDatasource: ref.read(messageDatasourceProvider),
   ),
 );
-final getMessageUsercase = Provider<GetMessagesUsecase>(
+final getMessageUsecase = Provider<GetMessagesUsecase>(
   (ref) => GetMessagesUsecase(repository: ref.read(messageRepositoryProvider)),
 );
 final messagesProvider = FutureProvider.family<List<MessageEntity>, int>((
   ref,
   userId,
 ) {
-  return ref.read(getMessageUsercase).call(userId);
+  return ref.read(getMessageUsecase).call(userId);
 });
-
 
 //so for the sending message provider and all in the below
 
-final sendMessageUsecaseProvider = Provider<SendMessageUsercases>((ref){
+final sendMessageUsecaseProvider = Provider<SendMessageUsercases>((ref) {
   return SendMessageUsercases(repository: ref.read(messageRepositoryProvider));
 });
 
-//for managing state in very beautiful way there is needed a notifierprovider
+class MessageNotifier extends AsyncNotifier<List<MessageEntity>> {
+  late int _userId;
+  Future<List<MessageEntity>> build() async => [];
 
-// class MessageNotifier extends AsyncNotifier<List<MessageEntity>>{
-//   late int _userId;
+  Future<void> loadMessage(int userId) async {
+    _userId = userId;
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(
+      () => ref.read(getMessageUsecase).call(userId),
+    );
+  }
 
-//   @override
+  Future<void> sendMessage(int receiverId, String message) async {
+    final newMessage = await ref
+        .read(sendMessageUsecaseProvider)
+        .call(receiverId, message);
+    state = AsyncData([...state.value ?? [], newMessage]);
+  }
+}
 
-// }
-
-
-
-
+final messageNotifierProvider =
+    AsyncNotifierProvider<MessageNotifier, List<MessageEntity>>(
+      MessageNotifier.new,
+    );
