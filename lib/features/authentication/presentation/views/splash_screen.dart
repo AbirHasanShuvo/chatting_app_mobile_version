@@ -16,7 +16,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _checkAuth();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAuth();
+    });
   }
 
   Future<void> _checkAuth() async {
@@ -34,6 +36,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     } else {
       context.go('/login');
     }
+
+    //context.go('/home');
   }
 
   @override

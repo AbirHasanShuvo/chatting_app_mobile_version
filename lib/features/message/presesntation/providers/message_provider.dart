@@ -32,6 +32,7 @@ final sendMessageUsecaseProvider = Provider<SendMessageUsercases>((ref) {
 
 class MessageNotifier extends AsyncNotifier<List<MessageEntity>> {
   late int _userId;
+  @override
   Future<List<MessageEntity>> build() async => [];
 
   Future<void> loadMessage(int userId) async {
